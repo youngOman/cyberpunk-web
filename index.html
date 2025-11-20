@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KOMICHI FANCLUB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              orbitron: ['Orbitron', 'sans-serif'],
+              rajdhani: ['Rajdhani', 'sans-serif'],
+            },
+            colors: {
+              neon: {
+                blue: '#00f3ff',
+                pink: '#ff00ff',
+                yellow: '#ffe600',
+                red: '#ff3333',
+                green: '#00ff9d',
+              }
+            },
+            animation: {
+              'pulse-fast': 'pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'spin-slow': 'spin 3s linear infinite',
+              'reel-blur': 'reelBlur 0.1s linear infinite',
+              'tv-out': 'tvOut 0.5s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards',
+              'tv-in': 'tvIn 0.6s cubic-bezier(0.215, 0.610, 0.355, 1.000) forwards',
+            },
+            keyframes: {
+              reelBlur: {
+                '0%': { transform: 'translateY(0) scaleY(1)', filter: 'blur(0)' },
+                '50%': { transform: 'translateY(10px) scaleY(1.2)', filter: 'blur(2px)' },
+                '100%': { transform: 'translateY(0) scaleY(1)', filter: 'blur(0)' }
+              },
+              tvOut: {
+                '0%': { transform: 'scale(1, 1)', opacity: '1', filter: 'blur(0)' },
+                '40%': { transform: 'scale(1, 0.002)', opacity: '1', filter: 'blur(2px)' },
+                '100%': { transform: 'scale(0, 0)', opacity: '0', filter: 'blur(10px)' }
+              },
+              tvIn: {
+                '0%': { transform: 'scale(0.005, 0)', opacity: '0', filter: 'blur(10px)' },
+                '60%': { transform: 'scale(1, 0.002)', opacity: '1', filter: 'blur(2px)' },
+                '100%': { transform: 'scale(1, 1)', opacity: '1', filter: 'blur(0)' }
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #050505;
+        color: #e0e0e0;
+        overflow-x: hidden;
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #111; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #333; 
+        border: 1px solid #00f3ff;
+      }
+      
+      /* CRT Scanline Effect */
+      .scanlines {
+        background: linear-gradient(
+          to bottom,
+          rgba(255,255,255,0),
+          rgba(255,255,255,0) 50%,
+          rgba(0,0,0,0.2) 50%,
+          rgba(0,0,0,0.2)
+        );
+        background-size: 100% 4px;
+        position: fixed;
+        pointer-events: none;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 50;
+        opacity: 0.6;
+      }
+      
+      .flicker-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 243, 255, 0.02);
+        opacity: 0;
+        z-index: 49;
+        pointer-events: none;
+        animation: flicker 0.15s infinite;
+      }
+
+      @keyframes flicker {
+        0% { opacity: 0.02; }
+        5% { opacity: 0.05; }
+        10% { opacity: 0.02; }
+        15% { opacity: 0.06; }
+        20% { opacity: 0.02; }
+        50% { opacity: 0.02; }
+        55% { opacity: 0.05; }
+        60% { opacity: 0.02; }
+        100% { opacity: 0.02; }
+      }
+
+      /* Hexagon Grid Background */
+      .hex-bg {
+        background-color: #000000;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23111111' fill-opacity='1' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      /* Better Glitch Effect */
+      .glitch-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+
+      .glitch-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .glitch-anim-1 {
+        animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+      }
+
+      .glitch-anim-2 {
+        animation: glitch-anim-2 3s infinite linear alternate-reverse;
+      }
+
+      @keyframes glitch-anim-1 {
+        0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+        20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+        40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+        60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+        80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
+        100% { clip-path: inset(30% 0 50% 0); transform: translate(1px, -1px); }
+      }
+
+      @keyframes glitch-anim-2 {
+        0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); }
+        20% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 2px); }
+        40% { clip-path: inset(30% 0 20% 0); transform: translate(2px, 1px); }
+        60% { clip-path: inset(15% 0 80% 0); transform: translate(-1px, -2px); }
+        80% { clip-path: inset(55% 0 10% 0); transform: translate(1px, 2px); }
+        100% { clip-path: inset(40% 0 30% 0); transform: translate(-2px, 1px); }
+      }
+      
+      .clip-path-cyberpunk {
+        clip-path: polygon(
+          0 0,
+          100% 0,
+          100% 85%,
+          95% 100%,
+          0 100%,
+          0 15%
+        );
+      }
+
+      /* 3D Flip Card Utilities */
+      .perspective-1000 {
+        perspective: 1000px;
+      }
+      .transform-style-3d {
+        transform-style: preserve-3d;
+      }
+      .backface-hidden {
+        backface-visibility: hidden;
+      }
+      .rotate-y-180 {
+        transform: rotateY(180deg);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <div class="scanlines"></div>
+    <div class="flicker-overlay"></div>
+  </body>
+</html>
