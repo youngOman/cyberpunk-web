@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useRef } from 'react';
 import { SLOT_ITEMS, COST_PER_SPIN } from '../constants';
 import { ChevronUp, RotateCw, Coins, Triangle } from 'lucide-react';
@@ -25,7 +26,7 @@ export const SlotMachine: React.FC<SlotMachineProps> = ({ credits, setCredits })
   const [reelStatus, setReelStatus] = useState<('idle' | 'spinning' | 'stopped')[]>(['idle', 'idle', 'idle']);
 
   // Refs to track interval IDs so we can clear them precisely
-  const intervalsRef = useRef<NodeJS.Timeout[]>([]);
+  const intervalsRef = useRef<ReturnType<typeof setInterval>[]>([]);
 
   const spin = useCallback(() => {
     if (credits < COST_PER_SPIN) {
@@ -108,7 +109,11 @@ export const SlotMachine: React.FC<SlotMachineProps> = ({ credits, setCredits })
   };
 
   return (
-    <div className="relative p-1 bg-gradient-to-b from-gray-800 to-gray-950 rounded-xl border-2 border-neon-blue shadow-[0_0_40px_rgba(0,243,255,0.2)] max-w-lg w-full mx-auto transform transition-transform hover:scale-[1.01]">
+    <div className={`
+      relative p-1 bg-gradient-to-b from-gray-800 to-gray-950 rounded-xl border-2 transition-all duration-500
+      ${isSpinning ? 'border-neon-pink shadow-[0_0_50px_rgba(255,0,255,0.3)]' : 'border-neon-blue shadow-[0_0_40px_rgba(0,243,255,0.2)]'}
+      max-w-lg w-full mx-auto transform hover:scale-[1.01]
+    `}>
       
       {/* Top Decorative Header */}
       <div className="bg-gray-900 p-3 rounded-t-lg flex justify-between items-center border-b border-gray-700 relative overflow-hidden">
@@ -183,7 +188,7 @@ export const SlotMachine: React.FC<SlotMachineProps> = ({ credits, setCredits })
       {/* Interaction Area */}
       <div className="p-5 bg-gray-900 rounded-b-lg">
         <div className="flex justify-between text-[10px] text-gray-400 font-rajdhani uppercase mb-3">
-          <span className="flex items-center gap-1"><div className="w-1 h-1 bg-neon-green rounded-full"></div> SYS_READY</span>
+          <span className="flex items-center gap-1"><div className={`w-1 h-1 rounded-full ${credits >= COST_PER_SPIN ? 'bg-neon-green shadow-[0_0_5px_#00ff9d]' : 'bg-red-500'}`}></div> SYS_READY</span>
           <span>COST: {COST_PER_SPIN} / SPIN</span>
         </div>
         
@@ -195,7 +200,7 @@ export const SlotMachine: React.FC<SlotMachineProps> = ({ credits, setCredits })
             transition-all duration-200 border-2
             ${isSpinning || credits < COST_PER_SPIN
               ? 'bg-gray-800 border-gray-600 text-gray-500 cursor-not-allowed' 
-              : 'bg-black/50 border-neon-pink text-neon-pink hover:bg-neon-pink hover:text-black shadow-[0_0_20px_rgba(255,0,255,0.4)]'}
+              : 'bg-black/50 border-neon-pink text-neon-pink hover:bg-neon-pink hover:text-black shadow-[0_0_20px_rgba(255,0,255,0.4)] hover:shadow-[0_0_40px_rgba(255,0,255,0.6)] hover:scale-[1.02]'}
           `}
         >
           <div className="flex items-center justify-center gap-3 font-orbitron font-black text-xl tracking-widest relative z-10">

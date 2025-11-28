@@ -9,5 +9,5 @@ export const SLOT_ITEMS = [
   { id: 6, name: 'NETRUN', icon: Skull, color: 'text-neon-red', points: 5000, rarity: 'legendary' },
 ];
 
-export const INITIAL_CREDITS = 1000;
+export const INITIAL_CREDITS = 1000000;
 export const COST_PER_SPIN = 50;

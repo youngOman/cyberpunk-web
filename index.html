@@ -28,11 +28,18 @@
             animation: {
               'pulse-fast': 'pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
               'spin-slow': 'spin 3s linear infinite',
+              'spin-reverse-slow': 'spinReverse 4s linear infinite',
               'reel-blur': 'reelBlur 0.1s linear infinite',
               'tv-out': 'tvOut 0.5s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards',
               'tv-in': 'tvIn 0.6s cubic-bezier(0.215, 0.610, 0.355, 1.000) forwards',
+              'scan': 'scan 2s linear infinite',
+              'blink': 'blink 1s step-end infinite',
             },
             keyframes: {
+              spinReverse: {
+                '0%': { transform: 'rotate(0deg)' },
+                '100%': { transform: 'rotate(-360deg)' },
+              },
               reelBlur: {
                 '0%': { transform: 'translateY(0) scaleY(1)', filter: 'blur(0)' },
                 '50%': { transform: 'translateY(10px) scaleY(1.2)', filter: 'blur(2px)' },
@@ -47,6 +54,16 @@
                 '0%': { transform: 'scale(0.005, 0)', opacity: '0', filter: 'blur(10px)' },
                 '60%': { transform: 'scale(1, 0.002)', opacity: '1', filter: 'blur(2px)' },
                 '100%': { transform: 'scale(1, 1)', opacity: '1', filter: 'blur(0)' }
+              },
+              scan: {
+                '0%, 100%': { top: '0%', opacity: '0' },
+                '10%': { opacity: '1' },
+                '90%': { opacity: '1' },
+                '50%': { top: '100%', opacity: '1' },
+              },
+              blink: {
+                '0%, 100%': { opacity: '1' },
+                '50%': { opacity: '0' },
               }
             }
           }
@@ -171,6 +188,10 @@
           0 100%,
           0 15%
         );
+      }
+      
+      .clip-path-slanted {
+         clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
       }
 
       /* 3D Flip Card Utilities */
